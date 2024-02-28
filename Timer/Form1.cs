@@ -131,6 +131,8 @@ namespace Timer
             SetColour();
 
             Timer.Text = CurrentTime;
+
+            ActiveControl = null;
         }
 
         private void SetColour()
@@ -193,6 +195,8 @@ namespace Timer
 
             SoundPlayer setPlayer = new SoundPlayer(Resources.ResourceManager.GetStream("Timer_Set_Long_Padded"));
             setPlayer.Play();
+
+            ActiveControl = null;
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -208,6 +212,8 @@ namespace Timer
 
             SoundPlayer setPlayer = new SoundPlayer(Resources.ResourceManager.GetStream("Timer_Set_Short_Padded"));
             setPlayer.Play();
+
+            ActiveControl = null;
         }
 
         private void LeftDec_Click(object sender, EventArgs e)
@@ -221,6 +227,8 @@ namespace Timer
             }
 
             RepaintText();
+
+            ActiveControl = null;
         }
 
         private void LeftInc_Click(object sender, EventArgs e)
@@ -234,6 +242,8 @@ namespace Timer
             }
 
             RepaintText();
+
+            ActiveControl = null;
         }
 
         private void RightDec_Click(object sender, EventArgs e)
@@ -247,6 +257,8 @@ namespace Timer
             }
 
             RepaintText();
+
+            ActiveControl = null;
         }
 
         private void RightInc_Click(object sender, EventArgs e)
@@ -260,6 +272,8 @@ namespace Timer
             }
 
             RepaintText();
+
+            ActiveControl = null;
         }
 
         private void blinkTimer_Tick(object sender, EventArgs e)
@@ -267,6 +281,8 @@ namespace Timer
             blinkToggle = !blinkToggle;
 
             SetColour();
+
+            ActiveControl = null;
         }
 
         private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
