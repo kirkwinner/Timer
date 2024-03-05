@@ -24,6 +24,8 @@ namespace Timer
 
         private Color faded = Color.FromArgb(50, 50, 50);
 
+        private CheekySound sound = new CheekySound();
+
         private Color CurrentColor
         {
             get => m_CurrentColor;
@@ -42,7 +44,7 @@ namespace Timer
             }
         }
 
-        private SoundPlayer alarmPlayer = new SoundPlayer(Resources.ResourceManager.GetStream("Timer_Alarm_Long_Padded"));
+        //private SoundPlayer alarmPlayer = new SoundPlayer(Resources.ResourceManager.GetStream("Timer_Alarm_Long_Padded"));
         private Color m_CurrentColor;
 
         private void CheekyTimer_Load(object sender, EventArgs e)
@@ -112,10 +114,11 @@ namespace Timer
                 return;
             }
 
-            if (alarmPlayer != null)
-            {
-                alarmPlayer.Stop();
-            }
+            //if (alarmPlayer != null)
+            //{
+            //    alarmPlayer.Stop();
+            //}
+            sound.AlarmStop();
 
             Size = new Size(284, 30);
             timerBlinkTimer.Start();
@@ -144,7 +147,8 @@ namespace Timer
         {
             isBlinking = true;
             blinkTimer.Start();
-            PlayAlarm();
+            //PlayAlarm();
+            sound.AlarmStart();
             CurrentColor = Color.White;
 
             Size = new Size(284, 284);
@@ -193,8 +197,10 @@ namespace Timer
             CurrentColor = faded;
             timerBlinkTimer.Stop();
 
-            SoundPlayer setPlayer = new SoundPlayer(Resources.ResourceManager.GetStream("Timer_Set_Long_Padded"));
-            setPlayer.Play();
+            //SoundPlayer setPlayer = new SoundPlayer(Resources.ResourceManager.GetStream("Timer_Set_Long_Padded"));
+            //setPlayer.Play();
+
+            sound.LongTimerSet();
 
             ActiveControl = null;
         }
@@ -210,8 +216,9 @@ namespace Timer
             CurrentColor = faded;
             timerBlinkTimer.Stop();
 
-            SoundPlayer setPlayer = new SoundPlayer(Resources.ResourceManager.GetStream("Timer_Set_Short_Padded"));
-            setPlayer.Play();
+            //SoundPlayer setPlayer = new SoundPlayer(Resources.ResourceManager.GetStream("Timer_Set_Short_Padded"));
+            //setPlayer.Play();
+            sound.ShortTimerSet();
 
             ActiveControl = null;
         }
@@ -292,12 +299,15 @@ namespace Timer
 
         private void PlayAlarm()
         {
-            alarmPlayer.Stop();
-            alarmPlayer.PlayLooping();
+            //alarmPlayer.Stop();
+            //alarmPlayer.PlayLooping();
+            sound.AlarmStop();
+            sound.AlarmStart();
         }
 
         private void Quit_Click(object sender, EventArgs e)
         {
+            sound.AlarmStop();
             Close();
         }
 
