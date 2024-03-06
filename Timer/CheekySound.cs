@@ -1,9 +1,9 @@
 ﻿using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
-using System.Linq;
-using System.Security.Policy;
+//using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 public class CheekySound
 {
@@ -47,71 +47,64 @@ public class CheekySound
 	private bool alarmStopped;
 
 	private WaveOut output;
-	//public Sound()
-	//{
-	//	var saws = Pattern(freqs, 250);
-
-	//	using (var wo = new WaveOutEvent())
-	//	{
-	//		wo.Init(saws);
-	//		wo.Play();
-
-	//		while (wo.PlaybackState == PlaybackState.Playing)
-	//		{
-	//			Thread.Sleep(50);
-	//		}
-
-	//		wo.Stop();
-	//	}
-	//}
 
 	public void ShortTimerSet()
 	{
 		var saws = SetterPattern(stFreqs, stDurations);
-
-		using (var wo = new WaveOutEvent())
-		{
-			wo.Init(saws);
-			wo.Play();
-
-			while (wo.PlaybackState == PlaybackState.Playing)
-			{
-				Thread.Sleep(50);
-			}
-
-			wo.Stop();
-		}
+		PlaySet(saws);
 	}
 
 	public void LongTimerSet()
 	{
 		var saws = SetterPattern(ltFreqs, ltDurations);
-
-		using (var wo = new WaveOutEvent())
-		{
-			wo.Init(saws);
-			wo.Play();
-
-			while (wo.PlaybackState == PlaybackState.Playing)
-			{
-				Thread.Sleep(50);
-			}
-
-			wo.Stop();
-		}
+		PlaySet(saws);
 	}
 
-	public void AlarmStart()
+	private void Output_PlaybackStopped(object sender, StoppedEventArgs e)
 	{
-		var saws = AlarmPattern(alarmFreqs, alarmDurations);
+		output.PlaybackStopped -= Output_PlaybackStopped;
+		output.Dispose();
+		output = null;
+	}
 
-		alarmStopped = false;
+	private void PlaySet(ISampleProvider input)
+	{
+		if (output != null)
+			AlarmStop();
+		
 		output = new WaveOut();
 
-		output.Init(saws);
-
+		output.Init(input);
 		output.Play();
+		output.PlaybackStopped += Output_PlaybackStopped;
+	}
+
+	public async void AlarmStart()
+	{
+		//var saws = AlarmPattern(alarmFreqs, alarmDurations);
+
+		alarmStopped = false;
+		int reps = 0;
+
+		output = new WaveOut();
+
+		ISampleProvider alarm = AlarmPattern(alarmFreqs, alarmDurations);
 		
+		while (!alarmStopped && reps < 300)
+		{
+			
+			output.Init(alarm);
+			output.Play();
+
+			await Task.Delay(TimeSpan.FromSeconds(4));
+
+			alarm = AlarmPattern(alarmFreqs, alarmDurations);
+
+			reps++;
+		}
+
+		if (reps >= 300)
+			AlarmStop();
 	}
 
 	public void AlarmStop()
@@ -147,8 +140,6 @@ public class CheekySound
 		float sawRate = 1 / (durations / 1000f);
 		ISampleProvider concat = new FilteredSaw(0, 8f, 48000, sawRate, 0).Take(TimeSpan.FromMilliseconds(5));
 
-		for (int loops = 0; loops < 60; loops++)
-		{
 			float gain = 0.3f;
 			for (int reps = 0; reps < 3; reps++)
 			{
@@ -158,9 +149,6 @@ public class CheekySound
 				}
 				gain *= 0.25f;
 			}
-
-			concat = concat.FollowedBy(new FilteredSaw(0, 0, 48000, sawRate, 0).Take(TimeSpan.FromMilliseconds(durations * freqs.Length)));
-		}
 
 		return concat;
 	}

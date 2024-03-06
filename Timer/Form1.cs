@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
-using System.Media;
-using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Timer.Properties;
@@ -24,7 +21,7 @@ namespace Timer
 
         private Color faded = Color.FromArgb(50, 50, 50);
 
-        private CheekySound sound = new CheekySound();
+        private readonly CheekySound sound = new CheekySound();
 
         private Color CurrentColor
         {
