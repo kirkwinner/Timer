@@ -59,32 +59,5 @@ namespace Timer.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream Timer_Alarm_Long_Padded {
-            get {
-                return ResourceManager.GetStream("Timer_Alarm_Long_Padded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream Timer_Set_Long_Padded {
-            get {
-                return ResourceManager.GetStream("Timer_Set_Long_Padded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream Timer_Set_Short_Padded {
-            get {
-                return ResourceManager.GetStream("Timer_Set_Short_Padded", resourceCulture);
-            }
-        }
     }
 }
