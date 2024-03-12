@@ -33,7 +33,7 @@ public class FilteredSaw : ISampleProvider
 
 		filter = BiQuadFilter.LowPassFilter(sampleRate, filterFreq, filterQ);
 
-		waveShaper = new WaveShaper(0.1f, 2f);
+		waveShaper = new WaveShaper(gain*2f);
 	}
 
 	public int Read(float[] buffer, int offset, int count)
@@ -42,7 +42,7 @@ public class FilteredSaw : ISampleProvider
 
 		for (int i = 0; i < samplesRead; i++)
 		{
-			buffer[offset + i] = waveShaper.Processs(filter.Transform(buffer[offset + i]));
+			buffer[offset + i] = waveShaper.SoftClip(filter.Transform(buffer[offset + i]));
 		}
 		return samplesRead;
 	}
