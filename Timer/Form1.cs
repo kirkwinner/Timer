@@ -95,6 +95,8 @@ namespace Timer
             StartPosition = FormStartPosition.Manual;
 
             Location = new Point(Settings.Default.LocationX, Settings.Default.LocationY);
+
+            ResetBlink();
         }
 
         private string CurrentTime => (timeLeft / 60).ToString("00") + ":" + (timeLeft % 60).ToString("00");
